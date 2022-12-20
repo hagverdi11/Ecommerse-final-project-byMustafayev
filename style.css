@@ -2321,6 +2321,16 @@ input[type="range"]::-webkit-slider-thumb{
     color: var(--white-color);
 }
 
+/* Wishlist */
+
+.delete-icon i{
+    font-size: 35px;
+}
+
+.icon-wishlist i{
+    font-size: 35px;
+}
+
 
 
 
@@ -2684,6 +2694,10 @@ input[type="range"]::-webkit-slider-thumb{
     .trending .products,
     .product-categories .row {
         flex: 0 0 33.3333%;
+    }
+
+    .heart-active {
+        color: red;
     }
 
     .products.big .media {

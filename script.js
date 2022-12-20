@@ -122,3 +122,61 @@ for (let x = 0; x < stocks.length; x++) {
 
     stocks[x].querySelector('.available').style.width = percent + '%'
 }
+
+
+// wishlist
+
+let wishlistBtns = document.querySelectorAll(".ri-heart-fill")
+
+let products = [];
+
+if (localStorage.getItem("products") !=null) {
+    products = JSON.parse(localStorage.getItem("products"))
+}
+
+
+
+wishlistBtns.forEach(wishlistBtn => {
+    wishlistBtn.addEventListener("click", function(e){
+        wishlistBtn.classList.toggle("heart-active")
+        e.preventDefault();
+
+        let productImage = this.parentNode.parentNode.parentNode.parentNode.parentNode.firstElementChild.firstElementChild.firstElementChild.getAttribute("src");
+        let productName = this.parentNode.parentNode.parentNode.parentNode.parentNode.nextElementSibling.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.innerText;
+        let productPrice = this.parentNode.parentNode.parentNode.parentNode.parentNode.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild.innerText;
+        let productId = parseInt(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-id"));
+       
+        let existProduct = products.find(m=>m.id ==productId);
+        if (existProduct != undefined) {
+            products.remove();
+        }
+        else{
+            products.push({
+                id:productId,
+                image:productImage,
+                name:productName,
+                price:productPrice,
+                count:1
+            })
+        }
+       
+
+        localStorage.setItem("products", JSON.stringify(products));
+        document.querySelector(".item-number").innerText = getProductsCount(products);
+
+    })
+});
+
+
+document.querySelector(".item-number").innerText = getProductsCount(products);
+
+function getProductsCount(items) {
+    let resultCount = 0;
+    for (const item of items) {
+        resultCount += item.count
+    }
+    return resultCount;
+}
+
+
+
