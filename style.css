@@ -2126,6 +2126,10 @@ input[type="range"]::-webkit-slider-thumb{
     line-height: 2em;
 }
 
+.cart-total h1{
+    text-align: center;
+}
+
 .cart-summary .cart-total > a {
     width: var(--percent100);
     display: flex;

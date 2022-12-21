@@ -130,16 +130,24 @@ let wishlistBtns = document.querySelectorAll(".ri-heart-fill")
 
 let products = [];
 
-if (localStorage.getItem("products") !=null) {
+if (localStorage.getItem("products")) {
     products = JSON.parse(localStorage.getItem("products"))
 }
 
-
+document.querySelector(".item-number").innerText = getProductsCount(products);
 
 wishlistBtns.forEach(wishlistBtn => {
+    let productId = parseInt(wishlistBtn.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-id"));
+    let existProduct = products.find(m=>m.id ==productId);
+    if (existProduct&&products.includes(existProduct)) {
+        wishlistBtn.classList.add('heart-active')
+    }
     wishlistBtn.addEventListener("click", function(e){
-        wishlistBtn.classList.toggle("heart-active")
         e.preventDefault();
+        if (!wishlistBtn.classList.contains("heart-active")) {
+        
+        wishlistBtn.classList.add("heart-active")
+       
 
         let productImage = this.parentNode.parentNode.parentNode.parentNode.parentNode.firstElementChild.firstElementChild.firstElementChild.getAttribute("src");
         let productName = this.parentNode.parentNode.parentNode.parentNode.parentNode.nextElementSibling.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.innerText;
@@ -148,7 +156,7 @@ wishlistBtns.forEach(wishlistBtn => {
        
         let existProduct = products.find(m=>m.id ==productId);
         if (existProduct != undefined) {
-            products.remove();
+            existProduct.count += 0;
         }
         else{
             products.push({
@@ -158,25 +166,84 @@ wishlistBtns.forEach(wishlistBtn => {
                 price:productPrice,
                 count:1
             })
+            document.querySelector(".item-number").innerText = getProductsCount(products);
         }
        
 
         localStorage.setItem("products", JSON.stringify(products));
         document.querySelector(".item-number").innerText = getProductsCount(products);
+        }
+        else{
+            
+            wishlistBtn.classList.remove("heart-active");
+            
+            let productId = parseInt(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-id"));
+
+            let existProduct = products.find(m=>m.id ==productId);
+             if (existProduct) {
+                
+                const newProducts=products.filter(m=>m!==existProduct);
+                localStorage.setItem('products',JSON.stringify(newProducts));
+                document.querySelector(".item-number").innerText = getProductsCount(newProducts);
+                window.location.reload()
+            }
+            
+        }
+        
 
     })
 });
 
 
-document.querySelector(".item-number").innerText = getProductsCount(products);
 
-function getProductsCount(items) {
-    let resultCount = 0;
-    for (const item of items) {
-        resultCount += item.count
-    }
-    return resultCount;
+
+function getProductsCount(items) {    
+    return items.length;
 }
+
+
+//basket
+
+let basketBtns = document.querySelectorAll(".ri-shopping-basket-fill")
+let  basketProducts = [];
+
+if (localStorage.getItem("basketProducts") !=null) {
+    basketProducts = JSON.parse(localStorage.getItem("basketProducts"))
+}
+
+
+
+basketBtns.forEach(basketBtn => {
+    basketBtn.addEventListener("click", function(e){
+        
+        e.preventDefault();
+
+        let basketProductImage = this.parentNode.parentNode.parentNode.parentNode.parentNode.firstElementChild.firstElementChild.firstElementChild.getAttribute("src");   
+        let basketProductName = this.parentNode.parentNode.parentNode.parentNode.parentNode.nextElementSibling.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.innerText;
+        let basketProductPrice = this.parentNode.parentNode.parentNode.parentNode.parentNode.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild.innerText;
+        let basketProductId = parseInt(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-id"));
+       
+        let existBasketProduct = basketProducts.find(m=>m.id ==basketProductId);
+        if (existBasketProduct != undefined) {
+            existBasketProduct.Count += 1;
+        }
+        else{
+            basketProducts.push({
+                Id:basketProductId,
+                Image:basketProductImage,
+                Name:basketProductName,
+                Price:basketProductPrice,
+                Count:1
+            })
+        }
+       
+
+        localStorage.setItem("basketProducts", JSON.stringify(basketProducts));
+        document.querySelector(".basketItem-number").innerText = getProductsCount(basketProducts);
+
+    })
+});
+
 
 
 
