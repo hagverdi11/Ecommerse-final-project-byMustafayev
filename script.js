@@ -223,11 +223,10 @@ basketBtns.forEach(basketBtn => {
         let basketProductPrice = this.parentNode.parentNode.parentNode.parentNode.parentNode.nextElementSibling.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild.innerText;
         let basketProductId = parseInt(this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-id"));
        
-        let existBasketProduct = basketProducts.find(m=>m.id ==basketProductId);
+        let existBasketProduct = basketProducts.find(m=>m.Id ==basketProductId);
         if (existBasketProduct != undefined) {
             existBasketProduct.Count += 1;
-        }
-        else{
+        } else{
             basketProducts.push({
                 Id:basketProductId,
                 Image:basketProductImage,
@@ -237,12 +236,17 @@ basketBtns.forEach(basketBtn => {
             })
         }
        
+       
 
         localStorage.setItem("basketProducts", JSON.stringify(basketProducts));
         document.querySelector(".basketItem-number").innerText = getProductsCount(basketProducts);
 
     })
 });
+
+document.querySelector(".basketItem-number").innerText = getBasketProductsCount(basketProducts);
+
+
 
 
 

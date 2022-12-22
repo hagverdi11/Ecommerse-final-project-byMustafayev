@@ -30,11 +30,11 @@ for (const basketProduct of basketProducts) {
 
 
 
-document.querySelector(".basketItem-number").innerText = getProductsCount(basketProducts);
+document.querySelector(".basketItem-number").innerText = getBasketProductsCount(basketProducts);
 
-function getProductsCount(items) {
+function getBasketProductsCount(items) {
     let resultCount = 0;
-    for (const item of items) {
+    for (const item of items) { 
         resultCount += item.count
     }
     return resultCount;
@@ -45,6 +45,7 @@ deleteBtns.forEach(btn => {
     btn.addEventListener("click", function (e) {
         e.preventDefault();
         let id = parseInt(this.parentNode.parentNode.parentNode.parentNode.firstElementChild.getAttribute("data-id"));
+        console.log(id);
 
         basketProducts = basketProducts.filter(m => m.id == id);
         localStorage.setItem("basketProducts", JSON.stringify(basketProducts));
